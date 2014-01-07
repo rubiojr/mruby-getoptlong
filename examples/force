@@ -1,0 +1,63 @@
+#!/usr/bin/env ruby
+
+def help
+  puts <<EOH
+Usage: force [options] [subcommand]
+
+Options:
+
+  -h             Print help
+  -f             Use force
+
+Subcommands:
+
+  echo
+
+EOH
+end
+
+def parse!(args)
+  subcommand = args.shift
+  cb_found = public_methods(true).find { |m| m.to_s == "#{subcommand}_subcommand" } 
+
+  if subcommand.nil?
+    default_subcommand(args)
+  elsif cb_found.nil?
+    raise "Invalid subcommand: #{subcommand}"
+  else
+    send("#{cb_found}", args)
+  end
+end
+
+opts = GetoptLong.new(
+  ['--help', '-h', GetoptLong::NO_ARGUMENT],
+  ['-f', GetoptLong::NO_ARGUMENT]
+)
+
+# Do not output errors to $stderr
+opts.quiet = true
+
+begin
+  opts.each do |opt, arg|
+    case opt
+    when '--help'
+      help
+      exit
+    when '-f'
+      puts 'Use The Force,'
+    end
+  end
+rescue GetoptLong::InvalidOption => e
+  # Equivalent to setting opts.quiet = false (default)
+  $stderr.puts "#{$0}: #{e.message}"
+end
+
+def echo_subcommand(*args)
+  puts args.join(" ")
+end
+
+def default_subcommand(*args)
+  puts "I'm a dummy subcommand"
+end
+
+parse! ARGV

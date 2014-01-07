@@ -2,6 +2,10 @@
 
 An almost-straight port of GetoptLong for mruby.
 
+See the examples directory and also [Ruby's GetoptLong](http://ruby-doc.org/stdlib-2.1.0/libdoc/getoptlong/rdoc/GetoptLong.html)
+
+## The patch
+
 ```diff
 --- mrblib.old/getoptlong.rb	2014-01-07 16:18:25.366898793 +0100
 +++ mrblib/getoptlong.rb	2014-01-07 16:42:46.716707011 +0100
