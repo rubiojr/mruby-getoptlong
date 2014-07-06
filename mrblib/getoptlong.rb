@@ -482,7 +482,7 @@ class GetoptLong
       #
       # This is a long style option, which start with `--'.
       #
-      pattern = $1
+      pattern = Regexp.last_match[1]
       if @canonical_names.include?(pattern)
         option_name = pattern
       else
@@ -509,7 +509,7 @@ class GetoptLong
       #
       if @argument_flags[option_name] == REQUIRED_ARGUMENT
         if argument =~ /=(.*)$/
-          option_argument = $1
+          option_argument = Regexp.last_match[1]
         elsif 0 < ARGV.length
           option_argument = ARGV.shift
         else
@@ -518,7 +518,7 @@ class GetoptLong
         end
       elsif @argument_flags[option_name] == OPTIONAL_ARGUMENT
         if argument =~ /=(.*)$/
-          option_argument = $1
+          option_argument = Regexp.last_match[1]
         elsif 0 < ARGV.length && !(ARGV[0] =~ /^-./)
           option_argument = ARGV.shift
         else
@@ -535,7 +535,7 @@ class GetoptLong
       # Short options may be catenated (e.g. `-l -g' is equivalent to
       # `-lg').
       #
-      option_name, ch, @rest_singles = $1, $2, $3
+      option_name, ch, @rest_singles = Regexp.last_match[1], Regexp.last_match[2], Regexp.last_match[3]
 
       if @canonical_names.include?(option_name)
         #
